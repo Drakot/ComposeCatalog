@@ -1,20 +1,20 @@
-package com.dralsoft.composecatalogo
+package com.dralsoft.composecatalogo.ui.components
 
-import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +23,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dralsoft.composecatalogo.R
+import com.dralsoft.composecatalogo.SuperHero
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun SimpleRecyclerView() {
@@ -50,6 +54,31 @@ fun SuperHeroView() {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun SuperHeroStickyView() {
+    val context = LocalContext.current
+    val superhero = getSuperheroes().groupBy { it.publisher }
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+
+        superhero.forEach { publisher, hero ->
+            stickyHeader {
+                Text(text = publisher, modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White), fontSize = 16.sp)
+            }
+
+            items(hero) { hero ->
+                ItemHero(superHero = hero) {
+                    Toast.makeText(context, it.superheroName, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+
+    }
+}
+
 @Composable
 fun SuperHeroGridView() {
     val context = LocalContext.current
@@ -64,11 +93,49 @@ fun SuperHeroGridView() {
 
 }
 
+@Composable
+fun SuperHeroWithControlsView() {
+    val context = LocalContext.current
+    val state = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+    Column {
+        LazyColumn(state = state, verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.weight(1f)) {
+            items(getSuperheroes()) { hero ->
+                ItemHero(hero, Modifier.fillMaxWidth()) {
+                    Toast.makeText(context, it.superheroName, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        val showButton by remember {
+            derivedStateOf {
+                state.firstVisibleItemIndex > 0
+            }
+        }
+
+        if (showButton) {
+            Button(
+                onClick = {
+                    coroutineScope.launch {
+                        state.animateScrollToItem(0)
+                    }
+                }, modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(16.dp)
+            ) {
+                Text(text = "Boton")
+            }
+        }
+    }
+
+}
 
 @Composable
-fun ItemHero(superHero: SuperHero, onItemSelected: (SuperHero) -> Unit) {
-    Card(border = BorderStroke(2.dp, Color.Black), modifier = Modifier
-        .width(200.dp)
+fun ItemHero(
+    superHero: SuperHero, modifier: Modifier = Modifier
+        .width(200.dp), onItemSelected: (SuperHero) -> Unit
+) {
+    Card(border = BorderStroke(2.dp, Color.Black), modifier = modifier
         .clickable {
             onItemSelected(superHero)
         }) {
