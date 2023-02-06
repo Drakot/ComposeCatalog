@@ -270,7 +270,7 @@ fun MyCard() {
 fun DefaultPreview() {
     ComposeCatalogoTheme {
         Column() {
-            SuperHeroGridView()
+            MyBottomNavigation()
         }
     }
 }
