@@ -8,6 +8,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 import com.dralsoft.composecatalogo.MyTextField
 import com.dralsoft.composecatalogo.ui.theme.*
@@ -202,46 +203,6 @@ fun DefaultPreviewHoisting() {
             MyTextField(myText) {
                 myText = it
             }
-        }
-    }
-}
-
-
-
-
-
-@Composable
-fun MySwitch() {
-    var state by rememberSaveable { mutableStateOf(true) }
-
-    Switch(
-        checked = state, onCheckedChange = {
-            state = !state
-        }, colors = SwitchDefaults.colors(
-            checkedThumbColor = Color.Red,
-            uncheckedThumbColor = Color.Blue,
-            checkedTrackColor = Color.Green
-        )
-    )
-}
-
-
-@Composable
-fun MyCard() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        elevation = 12.dp,
-        shape = MaterialTheme.shapes.small,
-        contentColor = Color.Green,
-        backgroundColor = Color.Blue,
-        border = BorderStroke(2.dp, Color.Red)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = "Ej 1")
-            Text(text = "Ej 2")
-            Text(text = "Ej 3")
         }
     }
 }

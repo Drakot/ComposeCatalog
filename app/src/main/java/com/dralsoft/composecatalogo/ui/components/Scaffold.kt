@@ -1,14 +1,15 @@
 package com.dralsoft.composecatalogo.ui.components
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.dralsoft.composecatalogo.MyBottomNavigation
 import kotlinx.coroutines.launch
 
@@ -20,11 +21,15 @@ fun ScaffoldView() {
 
     Scaffold(
         topBar = {
-            MyTopAppBar {
+            MyTopAppBar(onClick = {
                 coroutineScope.launch {
                     state.snackbarHostState.showSnackbar(it)
                 }
-            }
+            }, onClickDrawer = {
+                coroutineScope.launch {
+                    state.drawerState.open()
+                }
+            })
         }, scaffoldState = state,
         bottomBar = {
             MyBottomNavigation()
@@ -32,35 +37,53 @@ fun ScaffoldView() {
         floatingActionButton = {
             MyFab()
         }, floatingActionButtonPosition = FabPosition.Center,
-        isFloatingActionButtonDocked = true
+        isFloatingActionButtonDocked = false,
+        drawerContent = {
+            MyDrawer {
+                coroutineScope.launch {
+                    state.drawerState.close()
+                }
+            }
+        }
     ) {
     }
 }
 
 @Composable
-fun MyTopAppBar(onClick: (String) -> Unit) {
-    TopAppBar(title = {
-        Text(text = "Mi primera toolbar")
-
-    }, backgroundColor = Color.Red, contentColor = Color.White,
-        navigationIcon = {
-            IconButton(onClick = {
-                onClick("Atras")
-            }) {
-                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "back")
-            }
-
-        }, actions = {
-            IconButton(onClick = {
-                onClick("Search")
-            }) {
-                Icon(imageVector = Icons.Filled.Search, contentDescription = "search")
-            }
-
-            IconButton(onClick = {
-                onClick("Add")
-            }) {
-                Icon(imageVector = Icons.Filled.Add, contentDescription = "add")
-            }
-        })
+fun MyDrawer(onClose: () -> Unit) {
+    Column(Modifier.padding(8.dp)) {
+        Text(
+            text = "Item 1", modifier = Modifier
+                .padding(vertical = 8.dp)
+                .fillMaxWidth()
+                .clickable {
+                    onClose()
+                }
+        )
+        Text(
+            text = "Item 2", modifier = Modifier
+                .padding(vertical = 8.dp)
+                .fillMaxWidth()
+                .clickable {
+                    onClose()
+                }
+        )
+        Text(
+            text = "Item 3", modifier = Modifier
+                .padding(vertical = 8.dp)
+                .fillMaxWidth()
+                .clickable {
+                    onClose()
+                }
+        )
+        Text(
+            text = "Item 4", modifier = Modifier
+                .padding(vertical = 8.dp)
+                .fillMaxWidth()
+                .clickable {
+                    onClose()
+                }
+        )
+    }
 }
+
