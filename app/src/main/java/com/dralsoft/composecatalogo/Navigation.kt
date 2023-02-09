@@ -20,7 +20,7 @@ fun Screen1(navigation: NavHostController) {
         Text(text = "Screen 1", modifier = Modifier
             .background(Color.White)
             .clickable {
-                navigation.navigate("pantalla2")
+                navigation.navigate(Route.Pantalla2.route)
             })
     }
 }
@@ -35,7 +35,7 @@ fun Screen2(navigation: NavHostController) {
         Text(text = "Screen 2", modifier = Modifier
             .background(Color.White)
             .clickable {
-                navigation.navigate("pantalla3")
+                navigation.navigate(Route.Pantalla3.route)
             })
     }
 }
@@ -48,6 +48,21 @@ fun Screen3(navigation: NavHostController) {
             .background(Color.Green)
     ) {
         Text(text = "Screen 3", modifier = Modifier
+            .background(Color.White)
+            .clickable {
+                navigation.navigate(Route.Pantalla4.createRoute(2))
+            })
+    }
+}
+
+@Composable
+fun Screen4(navigation: NavHostController, age: Int) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.DarkGray)
+    ) {
+        Text(text = age.toString(), modifier = Modifier
             .background(Color.White)
             .clickable {
                 navigation.popBackStack()

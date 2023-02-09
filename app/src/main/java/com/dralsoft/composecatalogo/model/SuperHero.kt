@@ -1,4 +1,4 @@
-package com.dralsoft.composecatalogo
+package com.dralsoft.composecatalogo.model
 
 import androidx.annotation.DrawableRes
 
