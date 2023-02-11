@@ -50,6 +50,15 @@ fun DefaultPreview() {
                         navData.arguments?.getInt("age") ?: 0
                     )
                 }
+
+                composable(Route.Pantalla5.route, arguments = listOf(
+                    navArgument("name") { type = NavType.StringType; defaultValue ="" }
+                )) { navData ->
+                    Screen5(
+                        navigation,
+                        navData.arguments?.getString("name")
+                    )
+                }
             }
         }
     }

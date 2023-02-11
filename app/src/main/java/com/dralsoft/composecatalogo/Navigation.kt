@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
@@ -62,7 +63,23 @@ fun Screen4(navigation: NavHostController, age: Int) {
             .fillMaxSize()
             .background(Color.DarkGray)
     ) {
-        Text(text = age.toString(), modifier = Modifier
+        Text(text = age.toString(), modifier = Modifier.align(Alignment.Center)
+            .background(Color.White)
+            .clickable {
+                navigation.navigate(Route.Pantalla5.createRoute("Verga"))
+            })
+    }
+}
+
+
+@Composable
+fun Screen5(navigation: NavHostController, name: String?) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Cyan)
+    ) {
+        Text(text = "Me llamo $name", modifier = Modifier
             .background(Color.White)
             .clickable {
                 navigation.popBackStack()
